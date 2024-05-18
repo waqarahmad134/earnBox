@@ -15,7 +15,7 @@ export default function FeatureStart() {
                     data-wow-delay="0.3s"
                   >
                     <span className="icon">
-                      <img src="fassets/img/licon-3.png" alt="" />
+                      <img src="/img/licon-3.png" alt="" />
                     </span>
                     <div className="content">
                       <h3 className="subtitle">Total Control Over Spending</h3>
@@ -30,11 +30,11 @@ export default function FeatureStart() {
                     data-wow-delay="0.3s"
                   >
                     <span className="icon">
-                      <img src="fassets/img/licon-4.png" alt="" />
+                      <img src="/img/licon-4.png" alt="" />
                     </span>
                     <div className="content">
                       <h3 className="subtitle">Accounts Payable</h3>
-                      <p className="text">Get your Pay one time in PKR</p>
+                      <p className="text">Get your Pay one time in Dollars</p>
                     </div>
                   </li>
                 </ul>
@@ -47,7 +47,7 @@ export default function FeatureStart() {
                 data-wow-delay="0.3s"
               >
                 <img
-                  src="fassets/img/feature-img-2.png"
+                  src="/img/feature-img-2.png"
                   alt=""
                   className="feature-img"
                 />

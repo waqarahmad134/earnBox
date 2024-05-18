@@ -6,14 +6,14 @@ export default function Banner() {
       <div
         className="banner"
         id="home"
-        style={{ backgroundImage: "url(/fassets/img/banner-bg.png)" }}
+        style={{ backgroundImage: "url(/img/banner-bg.png)" }}
         >
-        <img className="bg-sape" src="fassets/img/banner-bg-2.png" alt="" />
+        <img className="bg-sape" src="/img/banner-bg-2.png" alt="" />
         <div className="tree-1">
-          <img src="fassets/img/tree1.png" alt="" />
+          <img src="/img/tree1.png" alt="" />
         </div>
         <div className="tree-2">
-          <img src="fassets/img/tree2.png" alt="" />
+          <img src="/img/tree2.png" alt="" />
         </div>
         <div className="hero-area">
           <div className="container">
@@ -32,7 +32,7 @@ export default function Banner() {
                     data-wow-duration="0.3s"
                     data-wow-delay="0.3s"
                   >
-                    1 Ptc Ads Price under 200 Pkr. EarnBoxe is the best Earning
+                    1 Trade Price under $1.5. EarnBoxe is the best Earning
                     platform to make secure and fast
                   </p>
                   <a

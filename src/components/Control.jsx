@@ -5,9 +5,9 @@ export default function Control() {
     <div>
         <div className="control">
         <div className="bg">
-            <img src="fassets/img/control-bg.png" alt="" className="control-bg" />
-            <img src="fassets/img/shape-1.png" alt="" className="sape-1" />
-            <img src="fassets/img/shape-2.png" alt="" className="sape-2" />
+            <img src="/img/control-bg.png" alt="" className="control-bg" />
+            <img src="/img/shape-1.png" alt="" className="sape-1" />
+            <img src="/img/shape-2.png" alt="" className="sape-2" />
         </div>
         <div className="container">
             <div className="row">
@@ -24,23 +24,23 @@ export default function Control() {
                     data-wow-delay="0.3s">
                     <div className="control-box">
                         <div className="tumb">
-                            <img src="fassets/img/control-1.png" alt="" />
+                            <img src="/img/control-1.png" alt="" />
                         </div>
                         <h3 className="subtitle">Your Earnings</h3>
                         <p className="text">
-                            Earn Boxe Always Provide Best Earning Solutions For Females, Students , Business Men And Each And Every Type Of Persons. You Have To Just Create Account, Upgrade Account Watch Ads And Withdraw Money
-                        </p>
+                            Earn Boxe Always Provide Best Earning Solutions For Females, Students , Business Men
+                            </p>
                     </div>
                 </div>
                 <div className="col-xl-3 col-lg-6 text-center wow fadeInDown" data-wow-duration="0.4s"
                     data-wow-delay="0.3s">
                     <div className="control-box">
                         <div className="tumb">
-                            <img src="fassets/img/control-2.png" alt="" />
+                            <img src="/img/control-2.png" alt="" />
                         </div>
                         <h3 className="subtitle">Easy Payments </h3>
                         <p className="text">
-                           Easy Paisa, Jazz Cash, U Paisa, Bank Account, Payeer Account
+                           Bitcoin (BTC), USDT , Etherium (ETH) , Doge , Cardano (ADA) 
                         </p>
                     </div>
                 </div>
@@ -48,7 +48,7 @@ export default function Control() {
                     data-wow-delay="0.3s">
                     <div className="control-box">
                         <div className="tumb">
-                            <img src="fassets/img/control-3.png" alt="" />
+                            <img src="/img/control-3.png" alt="" />
                         </div>
                         <h3 className="subtitle">Track Expenses</h3>
                         <p className="text">
@@ -60,7 +60,7 @@ export default function Control() {
                     data-wow-delay="0.3s">
                     <div className="control-box">
                         <div className="tumb">
-                            <img src="fassets/img/control-4.png" alt="" />
+                            <img src="/img/control-4.png" alt="" />
                         </div>
                         <h3 className="subtitle">Get Report</h3>
                         <p className="text">
@@ -72,8 +72,8 @@ export default function Control() {
             <div className="row">
                 <div className="col-12">
                     <div className="videoo">
-                        <img src="fassets/img/video-ilstation.png" alt="" className="video-ilstation" />
-                        <img src="fassets/img/video-bg.png" alt="" className="video-bg" />
+                        <img src="/img/video-ilstation.png" alt="" className="video-ilstation" />
+                        <img src="/img/video-bg.png" alt="" className="video-bg" />
                         <div className="video-box">
                             
                             

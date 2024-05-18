@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Tril() {
   return (
@@ -9,7 +10,7 @@ export default function Tril() {
             <div className="col-md-12">
               <div
                 className="content"
-                style={{ backgroundImage: "url(/fassets/img/free-tril.png)" }}
+                style={{ backgroundImage: "url(/img/free-tril.png)" }}
               >
                 <div className="row justify-content-center">
                   <div className="col-lg-8 text-center">
@@ -30,15 +31,15 @@ export default function Tril() {
                       >
                         What are you waiting for? It's time to get started.{" "}
                       </p>
-                      <a
-                        href="register.html"
+                      <Link
+                        to={'/login'}
                         className="button button-1 wow fadeInDown"
                         data-wow-duration="0.4s"
                         data-wow-delay="0.5s"
                       >
                         {" "}
                         Sign up Now
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>

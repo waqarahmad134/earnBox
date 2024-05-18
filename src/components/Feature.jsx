@@ -13,7 +13,7 @@ export default function Feature() {
                 data-wow-delay="0.3s"
               >
                 <img
-                  src="fassets/img/feature-img-1.png"
+                  src="/img/feature-img-1.png"
                   alt=""
                   className="feature-img"
                 />
@@ -35,9 +35,9 @@ export default function Feature() {
                   data-wow-delay="0.3s"
                 >
                   Earn Boxe provide different ways of earning money online. Main
-                  work you can do is to watch ads and earn money as fast you
-                  need according your package plan purchased. You need daily
-                  some clicks to view ads and will get a good revenue!
+                  work you can do is to Invest on crypto and earn as fast you
+                  need according your package plan purchased. You have to update
+                  daily that you goona trade or not to get revenue!
                 </p>
                 <ul className="list">
                   <li
@@ -46,7 +46,7 @@ export default function Feature() {
                     data-wow-delay="0.3s"
                   >
                     <span className="icon">
-                      <img src="fassets/img/licon-1.png" alt="" />
+                      <img src="/img/licon-1.png" alt="" />
                     </span>
                     <div className="content">
                       <h3 className="subtitle">Secure Payments</h3>
@@ -59,10 +59,12 @@ export default function Feature() {
                     data-wow-delay="0.3s"
                   >
                     <span className="icon">
-                      <img src="fassets/img/licon-2.png" alt="" />
+                      <img src="/img/licon-2.png" alt="" />
                     </span>
                     <div className="content">
-                      <h3 className="subtitle">Transaction Anywhere Any Time</h3>
+                      <h3 className="subtitle">
+                        Transaction Anywhere Any Time
+                      </h3>
                       <p className="text">
                         24 Hours Withdraw And Deposit Service On
                       </p>

@@ -1,19 +1,21 @@
 import React from "react";
-import {
-  error_toaster,
-  success_toaster,
-  warning_toaster,
-} from "../utilities/Toaster";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import logo from "../img/logo.png";
 
 export default function Navbar() {
+  const navigate = useNavigate();
+  const logoutFunc = () => {
+    localStorage.removeItem("accessToken");
+    navigate("/login");
+  };
   return (
     <>
       <div className="mein-menu">
         <nav className="navbar navbar-expand-lg navbar-dark ">
           <div className="container">
-            <a className="navbar-brand" href="#">
-              <img src="fassets/img/logo.png" className="logo" alt="logo" />
-            </a>
+            <Link to={"/"} className="navbar-brand">
+              <img src={logo} className="logo" alt="logo" />
+            </Link>
             <button
               className="navbar-toggler"
               type="button"
@@ -37,31 +39,40 @@ export default function Navbar() {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="sign-in.html">
+                  <a className="nav-link" href="#plans">
                     Plans
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#faq">
-                    FAQ
-                  </a>
+                  <Link className="nav-link" to={'/earn'}>
+                    Earn
+                  </Link>
                 </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#contact">
-                    Contact
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="register.html">
-                    Register
-                  </a>
-                </li>
-
-                <li className="nav-item">
-                  <a className="nav-link button-1" href="login.html">
-                    Login
-                  </a>
-                </li>
+                {!localStorage.getItem("accessToken") ? (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to={"/signup"}>
+                        Register
+                      </Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link button-1" to={"/login"}>
+                        Login
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="nav-item">
+                      <Link to={'/profile'} className="nav-link">
+                        Hi, {localStorage.getItem("name")}
+                      </Link>
+                    </li>
+                    <li onClick={logoutFunc} className="nav-item">
+                      <a className="nav-link">Logout</a>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>

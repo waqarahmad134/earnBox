@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -13,18 +14,17 @@ export default function Footer() {
             >
               <div className="footer-box">
                 <div className="logo">
-                  <img src="/fassets/img/logoi.png" alt="" />
+                  <img src="/img/logoi.png" alt="" />
                 </div>
                 <p className="text">
-                  Earn Boxe Team Provides Customer Care Support Through Whatsapp
-                  & Email.
+                  Earn Boxe Team Provides Customer Care Support Through Email.
                 </p>
               </div>
             </div>
             <div className="col-xl-8">
               <div className="row">
                 <div
-                  className="col-xl-3 col-lg-4 col-md-6 wow fadeInDown"
+                  className="col-xl-4 col-lg-4 col-md-6 wow fadeInDown"
                   data-wow-duration="0.4s"
                   data-wow-delay="0.3s"
                 >
@@ -32,39 +32,16 @@ export default function Footer() {
                     <h3 className="subtitle">Company</h3>
                     <ul className="footer-link">
                       <li>
-                        <a href="#">About Us</a>
+                        <a href="javascript:void(0);">About Us</a>
                       </li>
                       <li>
-                        <a href="#">Contact Us</a>
-                      </li>
-                      <li>
-                        <a href="#">Blog</a>
+                        <a href="javascript:void(0);">Contact Us</a>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div
-                  className="col-xl-3 col-lg-4 col-md-6 wow fadeInDown"
-                  data-wow-duration="0.5s"
-                  data-wow-delay="0.3s"
-                >
-                  <div className="footer-box">
-                    <h3 className="subtitle">Support</h3>
-                    <ul className="footer-link">
-                      <li>
-                        <a href="#">FAQ</a>
-                      </li>
-                      <li>
-                        <a href="#">Contact</a>
-                      </li>
-                      <li>
-                        <a href="#">Knowledge Base</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div
-                  className="col-xl-3 col-lg-4 col-md-6 wow fadeInDown"
+                  className="col-xl-4 col-lg-4 col-md-6 wow fadeInDown"
                   data-wow-duration="0.6s"
                   data-wow-delay="0.3s"
                 >
@@ -72,19 +49,19 @@ export default function Footer() {
                     <h3 className="subtitle">Policy</h3>
                     <ul className="footer-link">
                       <li>
-                        <a href="#">Terms of use</a>
+                        <a href="javascript:void(0);">Terms of use</a>
                       </li>
                       <li>
-                        <a href="#">Privacy Policy</a>
+                        <a href="javascript:void(0);">Privacy Policy</a>
                       </li>
                       <li>
-                        <a href="#">Refund Policy</a>
+                        <a href="javascript:void(0);">Refund Policy</a>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div
-                  className="col-xl-3 col-lg-4 col-md-6 wow fadeInDown"
+                  className="col-xl-4 col-lg-4 col-md-6 wow fadeInDown"
                   data-wow-duration="0.7s"
                   data-wow-delay="0.7s"
                 >
@@ -93,9 +70,9 @@ export default function Footer() {
                     <ul className="footer-link">
                       <li>
                         {" "}
-                        <a href="#">EarnBoxe@gmail.com</a>{" "}
+                        <a href="javascript:void(0);">EarnBoxe@gmail.com</a>{" "}
                       </li>
-                      <li> 03478868446</li>
+                      <li> </li>
                     </ul>
                   </div>
                 </div>
@@ -112,7 +89,7 @@ export default function Footer() {
                 >
                   <p className="text">
                     Copyright &copy; 2023. All Rights Reserved By{" "}
-                    <a href="#">EarnBoxe</a>
+                    <a href="javascript:void(0);">EarnBoxe</a>
                   </p>
                 </div>
                 <div
@@ -120,19 +97,19 @@ export default function Footer() {
                   data-wow-duration="0.4s"
                   data-wow-delay="0.5s"
                 >
-                  <a href="#">
+                  <a href="javascript:void(0);">
                     <i className="fab fa-facebook-f"></i>
                   </a>
-                  <a href="#">
+                  <a href="javascript:void(0);">
                     <i className="fab fa-twitter"></i>
                   </a>
-                  <a href="#">
+                  <a href="javascript:void(0);">
                     <i className="fab fa-pinterest-p"></i>
                   </a>
-                  <a href="#">
+                  <a href="javascript:void(0);">
                     <i className="fab fa-google-plus-g"></i>
                   </a>
-                  <a href="#">
+                  <a href="javascript:void(0);">
                     <i className="fab fa-instagram"></i>
                   </a>
                 </div>
