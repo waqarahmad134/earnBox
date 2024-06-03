@@ -69,7 +69,7 @@ export default function Navbar() {
                       </Link>
                     </li>
                     <li onClick={logoutFunc} className="nav-item">
-                      <a className="nav-link">Logout</a>
+                      <Link className="nav-link">Logout</Link>
                     </li>
                   </>
                 )}
