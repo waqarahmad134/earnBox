@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../img/logo.png";
 
 export default function Navbar() {
@@ -69,7 +69,7 @@ export default function Navbar() {
                       </Link>
                     </li>
                     <li onClick={logoutFunc} className="nav-item">
-                      <Link className="nav-link">Logout</Link>
+                      <a className="nav-link">Logout</a>
                     </li>
                   </>
                 )}

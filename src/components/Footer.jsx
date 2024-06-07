@@ -32,10 +32,10 @@ export default function Footer() {
                     <h3 className="subtitle">Company</h3>
                     <ul className="footer-link">
                       <li>
-                        <Link>About Us</Link>
+                        <a href="javascript:void(0);">About Us</a>
                       </li>
                       <li>
-                        <Link>Contact Us</Link>
+                        <a href="javascript:void(0);">Contact Us</a>
                       </li>
                     </ul>
                   </div>
@@ -49,13 +49,13 @@ export default function Footer() {
                     <h3 className="subtitle">Policy</h3>
                     <ul className="footer-link">
                       <li>
-                        <Link>Terms of use</Link>
+                        <a href="javascript:void(0);">Terms of use</a>
                       </li>
                       <li>
-                        <Link>Privacy Policy</Link>
+                        <a href="javascript:void(0);">Privacy Policy</a>
                       </li>
                       <li>
-                        <Link>Refund Policy</Link>
+                        <a href="javascript:void(0);">Refund Policy</a>
                       </li>
                     </ul>
                   </div>
@@ -70,7 +70,7 @@ export default function Footer() {
                     <ul className="footer-link">
                       <li>
                         {" "}
-                        <Link>EarnBoxe@gmail.com</Link>{" "}
+                        <a href="javascript:void(0);">EarnBoxe@gmail.com</a>{" "}
                       </li>
                       <li> </li>
                     </ul>
@@ -89,7 +89,7 @@ export default function Footer() {
                 >
                   <p className="text">
                     Copyright &copy; 2023. All Rights Reserved By{" "}
-                    <Link>EarnBoxe</Link>
+                    <a href="javascript:void(0);">EarnBoxe</a>
                   </p>
                 </div>
                 <div
@@ -97,21 +97,21 @@ export default function Footer() {
                   data-wow-duration="0.4s"
                   data-wow-delay="0.5s"
                 >
-                  <Link>
+                  <a href="javascript:void(0);">
                     <i className="fab fa-facebook-f"></i>
-                  </Link>
-                  <Link>
+                  </a>
+                  <a href="javascript:void(0);">
                     <i className="fab fa-twitter"></i>
-                  </Link>
-                  <Link>
+                  </a>
+                  <a href="javascript:void(0);">
                     <i className="fab fa-pinterest-p"></i>
-                  </Link>
-                  <Link>
+                  </a>
+                  <a href="javascript:void(0);">
                     <i className="fab fa-google-plus-g"></i>
-                  </Link>
-                  <Link>
+                  </a>
+                  <a href="javascript:void(0);">
                     <i className="fab fa-instagram"></i>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
