@@ -12,7 +12,7 @@ dist/
 
 public/
 
-# .env
+.env
 # Compiled Java class files
 *.class
 
