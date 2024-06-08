@@ -202,18 +202,18 @@ exports.updatePaymentMethod = async (req, res, next) => {
 
 exports.deletePaymentMethod = async (req, res, next) => {
   try {
-    const userId = req.params.userId;
-    const deletedUser = await user.destroy({ where: { id: userId } });
+    const id = req.params.id;
+    const deletedUser = await paymentMethod.destroy({ where: { id: id } });
 
     if (deletedUser === 1) {
-      return res.json(returnFunction("1", "User deleted successfully", {}, ""));
+      return res.json(returnFunction("1", "Deleted successfully", {}, ""));
     } else {
-      return res.json(returnFunction("0", "User not found", {}, ""));
+      return res.json(returnFunction("0", "Not found", {}, ""));
     }
   } catch (error) {
     console.error("Error deleting user:", error);
     return res.json(
-      returnFunction("0", "An error occurred while deleting user", {}, "")
+      returnFunction("0", "An error occurred while deleting", {}, "")
     );
   }
 };
