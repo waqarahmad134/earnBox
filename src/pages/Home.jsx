@@ -8,22 +8,11 @@ import Footer from "../components/Footer";
 import Tril from "../components/Tril";
 import Package from "../components/Package";
 
-export default function Home() {
-  return (
+export default function Home() {  return (
     <>
-      {/* <div>
-        <div className="preloader">
-          <div className="preloader-inner">
-            <div className="preloader-icon">
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-        </div>
-      </div> */}
       <Navbar />
       <Banner />
-      <Package/>
+      <Package />
       <Control />
       <Feature />
       <FeatureStart />

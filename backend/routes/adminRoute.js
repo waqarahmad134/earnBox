@@ -32,6 +32,7 @@ const uploadimage = multer.diskStorage({
 router.get('/allUsers', catchAsync(adminController.allUsers));
 router.get('/deleteUser/:userId', catchAsync(adminController.deleteUser));
 router.get('/updateStatus/:userId', catchAsync(adminController.updateStatus));
+router.get('/updatePaymentStatus/:userId', catchAsync(adminController.updatePaymentStatus));
 
 
 // ! Module 2:  Packages

@@ -30,6 +30,7 @@ export default function Login() {
       if (res?.data?.status === "1") {
         info_toaster(res?.data?.message);
         localStorage.setItem("accessToken", res?.data?.data?.accessToken);
+        localStorage.setItem("name", res?.data?.data?.name);
         navigate("/");
       } else {
         error_toaster(res?.data?.message);

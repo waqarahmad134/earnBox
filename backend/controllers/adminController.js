@@ -52,6 +52,33 @@ exports.updateStatus = async (req, res, next) => {
   }
 };
 
+exports.updatePaymentStatus = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const userData = await user.findByPk(userId);
+
+    if (!userData) {
+      return res.json(returnFunction("0", "User not found", {}, ""));
+    }
+
+    await user.update({ paymentStatus: !userData?.paymentStatus }, { where: { id: userId } });
+
+    return res.json(
+      returnFunction("1", "User Payment Proof Updated Successfully", {}, "")
+    );
+  } catch (error) {
+    console.error("Error updating user status:", error);
+    return res.json(
+      returnFunction(
+        "0",
+        "An error occurred while updating Payment Proof",
+        {},
+        ""
+      )
+    );
+  }
+};
+
 exports.deleteUser = async (req, res, next) => {
   try {
     const userId = req.params.userId;

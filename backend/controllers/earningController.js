@@ -1,7 +1,7 @@
 const moment = require("moment");
 const { Op } = require("sequelize");
 const { sequelize } = require("sequelize");
-const { package, user, ad, earning, wallet, withdraw } = require("../models");
+const { paymentMethod , package, user, ad, earning, wallet, withdraw } = require("../models");
 const appError = require("../utils/appError");
 const { rmSync } = require("fs");
 
@@ -17,6 +17,31 @@ let returnFunction = (status, message, data, error) => {
             4. Get Packages
     ________________________________________
 */
+
+
+exports.getPaymentMethods = async (req, res, next) => {
+  try {
+    let data = await paymentMethod.findAll({});
+    return res.status(200).json({
+      status: "1",
+      message: `Payment methods`,
+      data: {
+        data
+      },
+      error: "",
+    });
+  } catch (error) {
+    return res.json(
+      returnFunction(
+        "0",
+        `Error: ${error.message}`,
+        null,
+        "An error occurred while fetching payment methods."
+      )
+    );
+  }
+};
+
 exports.getPackages = async (req, res, next) => {
   const allPackages = await package.findAll();
   return res.json(returnFunction("1", "All Packages", allPackages, ""));
@@ -26,9 +51,10 @@ exports.getPackages = async (req, res, next) => {
     ________________________________________
 */
 exports.selectPackage = async (req, res, next) => {
-  const { userId, packageId } = req.body;
+  const { userId, packageId , paymentMethodId } = req.body;
   let User = await user.findByPk(userId);
   User.packageId = packageId;
+  User.paymentMethodId = paymentMethodId;
   if (!req.file) {
     return next(new appError("Please Upload Picture", 200));
   }

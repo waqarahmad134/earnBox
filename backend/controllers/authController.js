@@ -496,15 +496,5 @@ exports.resendOTP = async (req, res, next) => {
     error: "",
   });
 };
-exports.getPaymentMethods = async (req, res, next) => {
- 
-  let data = await paymentMethod.findAll({});
-  return res.status(200).json({
-    status: "1",
-    message: `Payment mthods`,
-    data: {
-     data
-    },
-    error: "",
-  });
-};
+
+

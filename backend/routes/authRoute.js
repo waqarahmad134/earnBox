@@ -13,10 +13,10 @@ router.post('/verifyOTP', catchAsync(authController.verifyOTP));
 router.post('/forgotPassword', catchAsync(authController.forgotPassword));
 router.patch('/verifyPasswordOtp', catchAsync(authController.verifyPasswordOtp));
 
+
 router.use(validateToken);
 router.patch('/resetPassword', catchAsync(authController.resetPassword));
 router.patch('/updatePassword',catchAsync( authController.updatePassword));
-router.get('/getPaymentMethods',catchAsync( authController.getPaymentMethods));
 // ! Module 2: Agent Dashboard
 // 1.  Get 
 //router.get('/agentDashboard', validateToken, checkPermission,  asyncMiddleware(adminController.getAllCustomers)) 
