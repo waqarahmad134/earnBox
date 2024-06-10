@@ -36,6 +36,7 @@ router.post(
   earningController.selectPackage
 );
 
+router.get("/getUserDetails/:userId", catchAsync(earningController.getUserDetails));
 router.get("/getUserAds/:userId", catchAsync(earningController.getUserAds));
 router.post("/watchAd", catchAsync(earningController.watchAd));
 

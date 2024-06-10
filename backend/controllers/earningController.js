@@ -46,6 +46,19 @@ exports.getPackages = async (req, res, next) => {
   const allPackages = await package.findAll();
   return res.json(returnFunction("1", "All Packages", allPackages, ""));
 };
+
+exports.getUserDetails = async (req, res, next) => {
+  try{
+
+    const userId = req.params.userId; 
+    let data = await user.findByPk(userId);
+  return res.json(returnFunction("1", `User details of ${userId}`, data, ""));
+    }
+    catch{
+    return res.json(returnFunction("0", "Server Issue", "", ""));
+
+  }
+};
 /*
             4. Select Packages
     ________________________________________

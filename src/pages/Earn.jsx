@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Footer from "../components/Footer";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../img/logo.png";
 import GetAPI from "../utilities/GetAPI";
 import { PostAPI } from "../utilities/PostAPI";
@@ -8,9 +8,18 @@ import { info_toaster } from "../utilities/Toaster";
 
 export default function Earn() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   const logoutFunc = () => {
-    localStorage.removeItem("accessToken");
-    navigate("/login");
+    const confirmed = window.confirm("Are you sure you want to logout?");
+    if (confirmed) {
+      localStorage.removeItem("accessToken");
+      navigate("/login");
+    }
   };
   const headerStyles = {
     position: "fixed",
@@ -117,10 +126,13 @@ export default function Earn() {
         <div>
           {data?.data?.userData?.paymentStatus ? (
             <>
-              <h2 className="mb-2">
-                You can <strong style={{ color: "red" }}>trade</strong> only
-                once{" "}
-              </h2>
+              {data?.data?.addData?.length > 0 && (
+                <h2 className="mb-2">
+                  You can <strong style={{ color: "red" }}>trade</strong>{" "}
+                  Following
+                </h2>
+              )}
+
               <div className="portos">
                 {data?.data?.addData?.length > 0 ? (
                   data?.data?.addData?.map((data, index) => (
@@ -148,15 +160,16 @@ export default function Earn() {
                           onClick={() => watchAdFunc(data?.id)}
                           className="btn btn-primary"
                         >
-                          Trade {data?.code}  {data?.id}
+                          Trade {data?.code} {data?.id}
                         </button>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="h3" style={{ whiteSpace: "nowrap" }}>
-                    You have sucessfully traded today
-                  </p>
+                  <h2 className="mb-2" style={{ whiteSpace: "nowrap" }}>
+                    You have sucessfully{" "}
+                    <strong style={{ color: "red" }}>traded</strong> today
+                  </h2>
                 )}
               </div>
             </>

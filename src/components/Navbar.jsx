@@ -5,8 +5,11 @@ import logo from "../img/logo.png";
 export default function Navbar() {
   const navigate = useNavigate();
   const logoutFunc = () => {
-    localStorage.removeItem("accessToken");
-    navigate("/login");
+    const confirmed = window.confirm("Are you sure you want to logout?");
+    if (confirmed) {
+      localStorage.removeItem("accessToken");
+      navigate("/login");
+    }
   };
   return (
     <>
@@ -14,7 +17,7 @@ export default function Navbar() {
         <nav className="navbar navbar-expand-lg navbar-dark ">
           <div className="container">
             <Link to={"/"} className="navbar-brand">
-              <img src={logo} className="logo h-5"  alt="logo" />
+              <img src={logo} className="logo h-5" alt="logo" />
             </Link>
             <button
               className="navbar-toggler"
@@ -44,7 +47,7 @@ export default function Navbar() {
                   </a>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to={'/earn'}>
+                  <Link className="nav-link" to={"/earn"}>
                     Earn
                   </Link>
                 </li>
@@ -64,7 +67,7 @@ export default function Navbar() {
                 ) : (
                   <>
                     <li className="nav-item">
-                      <Link to={'/profile'} className="nav-link">
+                      <Link to={"/profile"} className="nav-link">
                         Hi, {localStorage.getItem("name")}
                       </Link>
                     </li>
