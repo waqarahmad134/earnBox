@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   error_toaster,
   info_toaster,
@@ -9,6 +9,7 @@ import { PostAPI } from "../utilities/PostAPI";
 
 export default function Signup() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [tab, setTab] = useState(false);
   const [Otp, setOtp] = useState("");
   const [signUp, setSignUp] = useState({
@@ -17,8 +18,14 @@ export default function Signup() {
     email: "",
     phoneNum: "",
     password: "",
-    referId: "",
+    referBy: "",
   });
+  useEffect(() => {
+    const regex = /(?<=\=)(.*$)/;
+    const match = location.search.match(regex);
+    const value = match ? match[0] : "";
+    setSignUp((prevState) => ({ ...prevState, referBy: value }));
+  }, [location]);
   const onChange = (e) => {
     setSignUp({ ...signUp, [e.target.name]: e.target.value });
   };
@@ -35,7 +42,7 @@ export default function Signup() {
         email: signUp.email,
         password: signUp.password,
         phoneNum: signUp.phoneNum,
-        referId: signUp.referId,
+        referBy: signUp.referBy,
       });
       console.log(res?.data);
       if (res?.data?.status === "1") {
@@ -151,13 +158,13 @@ export default function Signup() {
                         </div>
                         <div className="form-group">
                           <input
-                            value={signUp.referId}
+                            value={signUp.referBy}
                             onChange={onChange}
-                            type="referId"
+                            type="referBy"
                             className="form-control"
-                            id="referId"
-                            name="referId"
-                            placeholder="referId"
+                            id="referBy"
+                            name="referBy"
+                            placeholder="referBy"
                           />
                         </div>
 
@@ -165,7 +172,7 @@ export default function Signup() {
                           type="submit"
                           className="btn btn-primary btn-block btn-submit"
                         >
-                          Sign In
+                          Register
                         </button>
                       </form>
                     ) : (

@@ -12,15 +12,13 @@ code {
     monospace;
 }
 
-/* Custom CSS for PrimeReact DataTable */
 
-/* Table Header */
+
 .p-datatable .p-datatable-thead > tr > th {
   background-color: #f0f0f0; 
   padding: 0rem 1rem !important;
 }
 
-/* ADVERTISERS SERVICE CARD */
 body {
   font-family: "Roboto", sans-serif !important;
 }
@@ -142,9 +140,13 @@ body {
 .advertisers-service-sec .service-card:hover p {
   color: #f0f0f0;
 }
-/* ADVERTISERS SERVICE CARD ENDED */
 
-
+.sticky {
+    position: -webkit-sticky;
+    position: sticky !important;
+    top: 150px !important;
+    
+  }
 
 
 

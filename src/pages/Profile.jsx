@@ -36,7 +36,7 @@ export default function Profile() {
   const userData = GetAPI(
     `earning/v1/getUserDetails/${parseInt(localStorage.getItem("userId"))}`
   );
-  console.log("🚀 ~ Profile ~ userData:", userData?.data?.data)
+  console.log("🚀 ~ Profile ~ userData:", userData?.data?.data);
 
   const headerStyles = {
     position: "fixed",
@@ -193,7 +193,7 @@ export default function Profile() {
         <div className="container">
           <div className="row">
             <div className="col-lg-4">
-              <div className="card">
+              <div className="card sticky">
                 <div className="card-body">
                   <div className="d-flex flex-column align-items-center text-center">
                     <img
@@ -203,9 +203,16 @@ export default function Profile() {
                       width="110"
                     />
                     <div className="mt-3">
-                      <h4>{userData?.data?.data?.firstName + userData?.data?.data?.lastName }</h4>
-                      <p className="text-secondary mb-1">{userData?.data?.data?.phoneNum}</p>
-                      <p className="text-muted font-size-sm">{userData?.data?.data?.email}</p>
+                      <h4>
+                        {userData?.data?.data?.firstName +
+                          userData?.data?.data?.lastName}
+                      </h4>
+                      <p className="text-secondary mb-1">
+                        {userData?.data?.data?.phoneNum}
+                      </p>
+                      <p className="text-muted font-size-sm">
+                        {userData?.data?.data?.email}
+                      </p>
                     </div>
                     <div className="d-flex justify-content-between align-items-center mt-3">
                       <button onClick={onOpen} className="btn btn-secondary">
@@ -240,7 +247,7 @@ export default function Profile() {
                     </button>
                     <button
                       className={` ${
-                        tab === "earning" ? "bg-primary text-white" : ""
+                        tab === "refer" ? "bg-primary text-white" : ""
                       } list-group-item list-group-item-action border-0`}
                       onClick={() => setTab("refer")}
                     >
@@ -260,60 +267,106 @@ export default function Profile() {
               {tab === "profile" && (
                 <form className="card">
                   <div className="card-body">
-                      <h5>Profile Information</h5>
-                      <div className="row my-3">
-                        <div className="col">
-                          <label htmlFor="">First Name</label>
-                          <input type="text" className="form-control" value={userData?.data?.data?.firstName}  disabled/>
-                        </div>
-                        <div className="col">
-                          <label htmlFor="">First Name</label>
-                          <input type="text" className="form-control" value={userData?.data?.data?.lastName}  disabled/>
-                        </div>
+                    <h5>Profile Information</h5>
+                    <div className="row my-3">
+                      <div className="col">
+                        <label htmlFor="">First Name</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={userData?.data?.data?.firstName}
+                          disabled
+                        />
                       </div>
-                      <div className="row my-3">
-                        <div className="col">
-                          <label htmlFor="">Email</label>
-                          <input type="text" className="form-control" value={userData?.data?.data?.email}  disabled/>
-                        </div>
-                        <div className="col">
-                          <label htmlFor="">Phone Number</label>
-                          <input type="text" className="form-control" value={userData?.data?.data?.phoneNum}  disabled/>
-                        </div>
+                      <div className="col">
+                        <label htmlFor="">First Name</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={userData?.data?.data?.lastName}
+                          disabled
+                        />
                       </div>
-                      <div className="row my-3">
-                        <div className="col">
-                          <label htmlFor="">City</label>
-                          <input type="text" className="form-control" value={userData?.data?.data?.city} />
-                        </div>
-                        <div className="col">
-                          <label htmlFor="">Address</label>
-                          <input type="text" className="form-control" value={userData?.data?.data?.address} />
-                        </div>
+                    </div>
+                    <div className="row my-3">
+                      <div className="col">
+                        <label htmlFor="">Email</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={userData?.data?.data?.email}
+                          disabled
+                        />
                       </div>
-                      <div className="row my-3">
-                        <div className="col">
-                          <label htmlFor="">DOB</label>
-                          <input type="text" className="form-control" value={userData?.data?.data?.dob} />
-                        </div>
-                        <div className="col">
-                          <label htmlFor="">Gender</label>
-                          <input type="text" className="form-control" value={userData?.data?.data?.gender} />
-                        </div>
+                      <div className="col">
+                        <label htmlFor="">Phone Number</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={userData?.data?.data?.phoneNum}
+                          disabled
+                        />
                       </div>
-                      <div className="row my-3">
-                        <div className="col">
-                          <label htmlFor="">CNIC</label>
-                          <input type="text" className="form-control" value={userData?.data?.data?.cnic} />
-                        </div>
-                        <div className="col">
-                          <label htmlFor="">Zip</label>
-                          <input type="text" className="form-control" value={userData?.data?.data?.zip} />
-                        </div>
+                    </div>
+                    <div className="row my-3">
+                      <div className="col">
+                        <label htmlFor="">City</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={userData?.data?.data?.city}
+                        />
                       </div>
-                  <div className="my-4">
-                    <button className="btn bg-primary text-white">Update</button>
-                  </div>
+                      <div className="col">
+                        <label htmlFor="">Address</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={userData?.data?.data?.address}
+                        />
+                      </div>
+                    </div>
+                    <div className="row my-3">
+                      <div className="col">
+                        <label htmlFor="">DOB</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={userData?.data?.data?.dob}
+                        />
+                      </div>
+                      <div className="col">
+                        <label htmlFor="">Gender</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={userData?.data?.data?.gender}
+                        />
+                      </div>
+                    </div>
+                    <div className="row my-3">
+                      <div className="col">
+                        <label htmlFor="">CNIC</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={userData?.data?.data?.cnic}
+                        />
+                      </div>
+                      <div className="col">
+                        <label htmlFor="">Zip</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={userData?.data?.data?.zip}
+                        />
+                      </div>
+                    </div>
+                    <div className="my-4">
+                      <button className="btn bg-primary text-white">
+                        Update
+                      </button>
+                    </div>
                   </div>
                 </form>
               )}
@@ -421,7 +474,12 @@ export default function Profile() {
                 <div className="card">
                   <div className="card-body">
                     <h5>Refer</h5>
-                 
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={userData?.data?.data?.referId}
+                      disabled
+                    />
                   </div>
                 </div>
               )}

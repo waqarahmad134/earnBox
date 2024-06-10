@@ -49,7 +49,6 @@ exports.getPackages = async (req, res, next) => {
 
 exports.getUserDetails = async (req, res, next) => {
   try{
-
     const userId = req.params.userId; 
     let data = await user.findByPk(userId);
   return res.json(returnFunction("1", `User details of ${userId}`, data, ""));

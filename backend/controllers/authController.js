@@ -39,10 +39,9 @@ let returnFunction = (status, message, data, error) => {
 */
 
 exports.signup = async (req, res, next) => {
+  console.log(req.body)
   try {
-    const { firstName, lastName, email, phoneNum, password, referId } = req.body;
-
-    // Check if user with same email or phone number exists
+    const { firstName, lastName, email, phoneNum, password, referBy } = req.body;
     let userExist = await user.findOne({
       where: {
         [Op.or]: [{ email: email }, { phoneNum: phoneNum }],
@@ -114,6 +113,16 @@ exports.signup = async (req, res, next) => {
       }
     } else {
       // Create new user
+      const referId = await user.create({
+        firstName,
+        lastName,
+        email,
+        phoneNum,
+        password,
+        status: true,
+        referBy,
+      }).then(user => user.id);
+  
       let newUser = await user.create({
         firstName,
         lastName,
@@ -122,6 +131,7 @@ exports.signup = async (req, res, next) => {
         status: true,
         password,
         referId,
+        referBy,
       });
 
       // Generate OTP
