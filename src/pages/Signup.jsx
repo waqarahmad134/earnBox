@@ -44,14 +44,13 @@ export default function Signup() {
         phoneNum: signUp.phoneNum,
         referBy: signUp.referBy,
       });
-      console.log(res?.data);
       if (res?.data?.status === "1") {
         success_toaster(res?.data?.mesage);
         setTab(true);
         localStorage.setItem("otpId", res?.data?.data?.otpId);
         localStorage.setItem("userId", res?.data?.data?.userId);
-        // localStorage.setItem("accessToken", res?.data?.data?.accessToken);
-        // navigate("/");
+        localStorage.setItem("accessToken", res?.data?.data?.accessToken);
+        navigate("/");
       } else {
         error_toaster(res?.data?.mesage);
       }

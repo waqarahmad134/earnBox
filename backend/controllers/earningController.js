@@ -1,7 +1,15 @@
 const moment = require("moment");
 const { Op } = require("sequelize");
 const { sequelize } = require("sequelize");
-const { paymentMethod , package, user, ad, earning, wallet, withdraw } = require("../models");
+const {
+  paymentMethod,
+  package,
+  user,
+  ad,
+  earning,
+  wallet,
+  withdraw,
+} = require("../models");
 const appError = require("../utils/appError");
 const { rmSync } = require("fs");
 
@@ -18,7 +26,6 @@ let returnFunction = (status, message, data, error) => {
     ________________________________________
 */
 
-
 exports.getPaymentMethods = async (req, res, next) => {
   try {
     let data = await paymentMethod.findAll({});
@@ -26,7 +33,7 @@ exports.getPaymentMethods = async (req, res, next) => {
       status: "1",
       message: `Payment methods`,
       data: {
-        data
+        data,
       },
       error: "",
     });
@@ -48,14 +55,12 @@ exports.getPackages = async (req, res, next) => {
 };
 
 exports.getUserDetails = async (req, res, next) => {
-  try{
-    const userId = req.params.userId; 
+  try {
+    const userId = req.params.userId;
     let data = await user.findByPk(userId);
-  return res.json(returnFunction("1", `User details of ${userId}`, data, ""));
-    }
-    catch{
+    return res.json(returnFunction("1", `User details of ${userId}`, data, ""));
+  } catch {
     return res.json(returnFunction("0", "Server Issue", "", ""));
-
   }
 };
 /*
@@ -63,7 +68,7 @@ exports.getUserDetails = async (req, res, next) => {
     ________________________________________
 */
 exports.selectPackage = async (req, res, next) => {
-  const { userId, packageId , paymentMethodId } = req.body;
+  const { userId, packageId, paymentMethodId } = req.body;
   let User = await user.findByPk(userId);
   User.packageId = packageId;
   User.paymentMethodId = paymentMethodId;
@@ -242,19 +247,15 @@ exports.dashboard = async (req, res, next) => {
     );
   } catch (error) {
     console.error("Error fetching earnings:", error);
-    return res.status(200).json(
-      returnFunction("0", error.message, null, error.message)
-    );
+    return res
+      .status(200)
+      .json(returnFunction("0", error.message, null, error.message));
   }
 };
 
-
-
 exports.withdrawRequest = async (req, res, next) => {
-  // const userId = req.user.id;
-  const userId = 3;
   try {
-    const { amount, accountNo } = req.body;
+    const { userId, amount, accountNo } = req.body;
     let walletData = await wallet.findOne({ userId: userId });
     if (walletData) {
       let withdrawData = new withdraw();
@@ -290,8 +291,7 @@ exports.withdrawRequest = async (req, res, next) => {
   }
 };
 exports.getWithdraw = async (req, res, next) => {
-  // const userId = req.user.id;
-  const userId = 3;
+  const userId = req.params.userId;
   try {
     let history = await withdraw.findAll({ where: { userId: userId } });
     return res.status(200).json(returnFunction("1", "", { history }, ""));
@@ -321,25 +321,24 @@ exports.updateUserDetails = async (req, res, next) => {
     let userToUpdate = await user.findByPk(userId);
 
     if (!userToUpdate) {
-      return res.status(404).json(returnFunction("0", "User not found", null, {}));
+      return res
+        .status(404)
+        .json(returnFunction("0", "User not found", null, {}));
     }
-
-    // Update user details
     userToUpdate.city = city;
     userToUpdate.address = address;
     userToUpdate.dateOfBirth = dateOfBirth;
     userToUpdate.gender = gender;
     userToUpdate.zip = zip;
     userToUpdate.cnic = cnic;
-
-    // Save the updated user
     await userToUpdate.save();
-
-    return res.status(200).json(returnFunction("1", "User updated successfully", null, {}));
+    return res
+      .status(200)
+      .json(returnFunction("1", "User updated successfully", null, {}));
   } catch (error) {
     console.error("Error updating user:", error);
-    return res.status(500).json(returnFunction("0", error.message, null, error.message));
+    return res
+      .status(500)
+      .json(returnFunction("0", error.message, null, error.message));
   }
 };
-
-

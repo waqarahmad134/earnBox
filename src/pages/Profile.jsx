@@ -25,10 +25,10 @@ import {
 import {
   error_toaster,
   info_toaster,
-  success_toaster,
-  warning_toaster,
 } from "../utilities/Toaster";
 import { PostAPI } from "../utilities/PostAPI";
+import { BASE_URL } from "../utilities/URL";
+import axios from "axios";
 
 export default function Profile() {
   const { pathname } = useLocation();
@@ -39,6 +39,22 @@ export default function Profile() {
   const navigate = useNavigate();
   const [tab, setTab] = useState("profile");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [updateUserData, setupdateUserData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNum: "",
+    city: "",
+    address: "",
+    dateOfBirth: "",
+    gender: "",
+    zip: "",
+    cnic: "",
+  });
+  const [withdraw, setWithdraw] = useState({
+    accountNo: "",
+    amount: "",
+  });
   const { data } = GetAPI(
     `earning/v1/dashboard/${parseInt(localStorage.getItem("userId"))}`
   );
@@ -50,20 +66,60 @@ export default function Profile() {
     `earning/v1/getUserDetails/${parseInt(localStorage.getItem("userId"))}`
   );
 
-  const [updateUserData, setupdateUserData] = useState({
-    firstName: userData?.data?.data?.firstName,
-    lastName: userData?.data?.data?.lastName,
-    email: userData?.data?.data?.email,
-    phoneNum: userData?.data?.data?.phoneNum,
-    city: userData?.data?.data?.city,
-    address: userData?.data?.data?.address,
-    dateOfBirth: userData?.data?.data?.dateOfBirth,
-    gender: userData?.data?.data?.gender,
-    zip: userData?.data?.data?.zip,
-    cnic: userData?.data?.data?.cnic,
-  });
+  const withdrawData = GetAPI(
+    `earning/v1/getWithdraw/${parseInt(localStorage.getItem("userId"))}`
+  );
+  console.log(
+    "🚀 ~ Profile ~ withdrawData:",
+    withdrawData?.data?.data?.history?.[0]?.status
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          BASE_URL +
+            `earning/v1/getUserDetails/${parseInt(
+              localStorage.getItem("userId")
+            )}`
+        );
+        const userData = response.data.data;
+        setupdateUserData({
+          firstName: userData?.firstName || "",
+          lastName: userData?.lastName || "",
+          email: userData?.email || "",
+          phoneNum: userData?.phoneNum || "",
+          city: userData?.city || "",
+          address: userData?.address || "",
+          dateOfBirth: userData?.dateOfBirth || "",
+          gender: userData?.gender || "",
+          zip: userData?.zip || "",
+          cnic: userData?.cnic || "",
+        });
+      } catch (error) {
+        error_toaster(error);
+      }
+    };
+    fetchData();
+  }, []);
+
   const onChange = (e) => {
     setupdateUserData({ ...updateUserData, [e.target.name]: e.target.value });
+  };
+
+  const onChangeAmount = (e) => {
+    const inputValue = e.target.value;
+    const availableBalance =
+      parseFloat(data?.data?.availableBalance?.availableBalance) || 0;
+    const inputAmount = parseFloat(inputValue);
+    if (inputAmount > availableBalance) {
+      e.target.value = availableBalance.toFixed(2);
+    }
+    setWithdraw({ ...withdraw, [e.target.name]: e.target.value });
+  };
+
+  const onChangeAccount = (e) => {
+    setWithdraw({ ...withdraw, [e.target.name]: e.target.value });
   };
 
   const handleUserUpdate = async (e) => {
@@ -82,6 +138,29 @@ export default function Profile() {
       });
       if (res?.data?.status === "1") {
         info_toaster(res?.data?.message);
+      } else {
+        error_toaster(res?.data?.message);
+      }
+    }
+  };
+
+  const handleWithdraw = async (e) => {
+    e.preventDefault();
+    if (withdraw.amount === "") {
+      info_toaster("Please enter Amount");
+    } else {
+      let res = await PostAPI("earning/v1/withdrawRequest", {
+        userId: parseInt(localStorage.getItem("userId")),
+        amount: withdraw?.amount,
+        accountNo: withdraw?.accountNo,
+      });
+      if (res?.data?.status === "1") {
+        info_toaster(res?.data?.message);
+        setWithdraw({
+          accountNo: "",
+          amount: "",
+        });
+        onClose();
       } else {
         error_toaster(res?.data?.message);
       }
@@ -109,29 +188,48 @@ export default function Profile() {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Withdraw Earning</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <div>
-              Current Balance:{" "}
-              <b>
-                ${" "}
-                {parseFloat(
-                  data?.data?.availableBalance?.availableBalance
-                ).toFixed(2) || "0"}
-              </b>
-            </div>
-            <label htmlFor="money">
-              Please type how much amount you want to withdraw
-            </label>
-            <input type="text" id="money" className="form-control" />
-          </ModalBody>
+          <form onSubmit={handleWithdraw}>
+            <ModalHeader>Withdraw Earning</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <div>
+                Current Balance:{" "}
+                <b>
+                  ${" "}
+                  {parseFloat(
+                    data?.data?.availableBalance?.availableBalance
+                  ).toFixed(2) || "0"}
+                </b>
+              </div>
+              <label htmlFor="money">
+                Please type how much amount you want to withdraw
+              </label>
+              <input
+                type="text"
+                id="money"
+                onChange={onChangeAmount}
+                name="amount"
+                className="form-control"
+              />
+              <label htmlFor="account">Account Number</label>
+              <input
+                type="text"
+                id="account"
+                onChange={onChangeAccount}
+                name="account"
+                className="form-control"
+              />
+            </ModalBody>
 
-          <ModalFooter>
-            <button onClick={onClose} className="btn btn-warning">
-              Withdraw
-            </button>
-          </ModalFooter>
+            <ModalFooter>
+              <button type="submit" className="btn btn-primary">
+                Withdraw
+              </button>
+              <button onClick={onClose} className="btn btn-warning">
+                Cancel
+              </button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
       <div className="mein-menu" style={headerStyles}>
@@ -154,12 +252,12 @@ export default function Profile() {
             <div className="collapse navbar-collapse" id="navbarNavDropdown">
               <ul className="navbar-nav">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page">
+                  <Link className="nav-link active" aria-current="page">
                     Features
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link">Plans</a>
+                  <Link className="nav-link">Plans</Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to={"/earn"}>
@@ -296,6 +394,14 @@ export default function Profile() {
                     </button>
                     <button
                       className={` ${
+                        tab === "withdraw" ? "bg-primary text-white" : ""
+                      } list-group-item list-group-item-action border-0`}
+                      onClick={() => setTab("withdraw")}
+                    >
+                      Withdraw History
+                    </button>
+                    <button
+                      className={` ${
                         tab === "refer" ? "bg-primary text-white" : ""
                       } list-group-item list-group-item-action border-0`}
                       onClick={() => setTab("refer")}
@@ -374,6 +480,8 @@ export default function Profile() {
                           type="text"
                           className="form-control"
                           value={updateUserData?.address}
+                          onChange={onChange}
+                          name="address"
                         />
                       </div>
                     </div>
@@ -384,6 +492,8 @@ export default function Profile() {
                           type="text"
                           className="form-control"
                           value={updateUserData?.dateOfBirth}
+                          onChange={onChange}
+                          name="dateOfBirth"
                         />
                       </div>
                       <div className="col">
@@ -392,6 +502,8 @@ export default function Profile() {
                           type="text"
                           className="form-control"
                           value={updateUserData?.gender}
+                          onChange={onChange}
+                          name="gender"
                         />
                       </div>
                     </div>
@@ -402,6 +514,8 @@ export default function Profile() {
                           type="text"
                           className="form-control"
                           value={updateUserData?.cnic}
+                          onChange={onChange}
+                          name="cnic"
                         />
                       </div>
                       <div className="col">
@@ -410,6 +524,8 @@ export default function Profile() {
                           type="text"
                           className="form-control"
                           value={updateUserData?.zip}
+                          onChange={onChange}
+                          name="zip"
                         />
                       </div>
                     </div>
@@ -521,6 +637,59 @@ export default function Profile() {
                         className="border px-3"
                       ></Column>
                     </DataTable>
+                  </div>
+                </div>
+              )}
+              {tab === "withdraw" && (
+                <div className="card">
+                  <div className="card-body">
+                    <h5>Withdraw History</h5>
+                    <div className="overflow-x-auto my-3">
+                      <table className="w-100 table-responsive">
+                        <thead>
+                          <tr className="">
+                            <th className="px-2 font-medium text-black">No#</th>
+                            <th className="px-2 font-medium text-black dark:text-white">
+                              Amount
+                            </th>
+                            <th className="px-2 font-medium text-black dark:text-white">
+                              Account No
+                            </th>
+                            <th className="px-2  font-medium text-black dark:text-white">
+                              Status
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {withdrawData?.data?.data?.history.map(
+                            (data, index) => (
+                              <tr key={index}>
+                                <td className="border-b border-[#eee] px-2">
+                                  <h5 className="font-medium text-black dark:text-white">
+                                    {index + 1}
+                                  </h5>
+                                </td>
+                                <td className="border-b border-[#eee] px-2">
+                                  <p className="text-black dark:text-white">
+                                    {data?.amount || "0"}
+                                  </p>
+                                </td>
+                                <td className="border-b border-[#eee] px-2">
+                                  <p className="text-black dark:text-white">
+                                    {data?.accountNo || "No Record"}
+                                  </p>
+                                </td>
+                                <td className="capitalize border-b border-[#eee] px-2">
+                                  <p className="text-black dark:text-white">
+                                    {data?.status === true ? "True" : "False"}
+                                  </p>
+                                </td>
+                              </tr>
+                            )
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               )}
