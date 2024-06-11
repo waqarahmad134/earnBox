@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "../components/Footer";
 import GetAPI from "../utilities/GetAPI";
 import logo from "../img/logo.png";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import moment from "moment";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaMoneyBill1Wave,
   FaMoneyBills,
@@ -22,8 +22,20 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import {
+  error_toaster,
+  info_toaster,
+  success_toaster,
+  warning_toaster,
+} from "../utilities/Toaster";
+import { PostAPI } from "../utilities/PostAPI";
 
 export default function Profile() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   const navigate = useNavigate();
   const [tab, setTab] = useState("profile");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -33,18 +45,47 @@ export default function Profile() {
   const earningHistory = GetAPI(
     `earning/v1/getEarningHistory/${parseInt(localStorage.getItem("userId"))}`
   );
+
   const userData = GetAPI(
     `earning/v1/getUserDetails/${parseInt(localStorage.getItem("userId"))}`
   );
-  console.log("🚀 ~ Profile ~ userData:", userData?.data?.data);
 
-  const headerStyles = {
-    position: "fixed",
-    top: "0",
-    left: "0",
-    width: "100%",
-    background: "linear-gradient(45deg, #903eff 0%, #3e19ff 100%)",
-    zIndex: "99",
+  const [updateUserData, setupdateUserData] = useState({
+    firstName: userData?.data?.data?.firstName,
+    lastName: userData?.data?.data?.lastName,
+    email: userData?.data?.data?.email,
+    phoneNum: userData?.data?.data?.phoneNum,
+    city: userData?.data?.data?.city,
+    address: userData?.data?.data?.address,
+    dateOfBirth: userData?.data?.data?.dateOfBirth,
+    gender: userData?.data?.data?.gender,
+    zip: userData?.data?.data?.zip,
+    cnic: userData?.data?.data?.cnic,
+  });
+  const onChange = (e) => {
+    setupdateUserData({ ...updateUserData, [e.target.name]: e.target.value });
+  };
+
+  const handleUserUpdate = async (e) => {
+    e.preventDefault();
+    if (updateUserData.city === "") {
+      info_toaster("Please enter City");
+    } else {
+      let res = await PostAPI("earning/v1/updateUserDetails", {
+        userId: parseInt(localStorage.getItem("userId")),
+        city: updateUserData.city,
+        address: updateUserData.address,
+        dateOfBirth: updateUserData.dateOfBirth,
+        gender: updateUserData.gender,
+        zip: updateUserData.zip,
+        cnic: updateUserData.cnic,
+      });
+      if (res?.data?.status === "1") {
+        info_toaster(res?.data?.message);
+      } else {
+        error_toaster(res?.data?.message);
+      }
+    }
   };
 
   const logoutFunc = () => {
@@ -55,6 +96,14 @@ export default function Profile() {
     }
   };
 
+  const headerStyles = {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    background: "linear-gradient(45deg, #903eff 0%, #3e19ff 100%)",
+    zIndex: "99",
+  };
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -274,7 +323,7 @@ export default function Profile() {
                         <input
                           type="text"
                           className="form-control"
-                          value={userData?.data?.data?.firstName}
+                          value={updateUserData?.firstName}
                           disabled
                         />
                       </div>
@@ -283,7 +332,7 @@ export default function Profile() {
                         <input
                           type="text"
                           className="form-control"
-                          value={userData?.data?.data?.lastName}
+                          value={updateUserData?.lastName}
                           disabled
                         />
                       </div>
@@ -294,7 +343,7 @@ export default function Profile() {
                         <input
                           type="text"
                           className="form-control"
-                          value={userData?.data?.data?.email}
+                          value={updateUserData?.email}
                           disabled
                         />
                       </div>
@@ -303,7 +352,7 @@ export default function Profile() {
                         <input
                           type="text"
                           className="form-control"
-                          value={userData?.data?.data?.phoneNum}
+                          value={updateUserData.phoneNum}
                           disabled
                         />
                       </div>
@@ -314,7 +363,9 @@ export default function Profile() {
                         <input
                           type="text"
                           className="form-control"
-                          value={userData?.data?.data?.city}
+                          value={updateUserData.city}
+                          onChange={onChange}
+                          name="city"
                         />
                       </div>
                       <div className="col">
@@ -322,7 +373,7 @@ export default function Profile() {
                         <input
                           type="text"
                           className="form-control"
-                          value={userData?.data?.data?.address}
+                          value={updateUserData?.address}
                         />
                       </div>
                     </div>
@@ -332,7 +383,7 @@ export default function Profile() {
                         <input
                           type="text"
                           className="form-control"
-                          value={userData?.data?.data?.dob}
+                          value={updateUserData?.dateOfBirth}
                         />
                       </div>
                       <div className="col">
@@ -340,7 +391,7 @@ export default function Profile() {
                         <input
                           type="text"
                           className="form-control"
-                          value={userData?.data?.data?.gender}
+                          value={updateUserData?.gender}
                         />
                       </div>
                     </div>
@@ -350,7 +401,7 @@ export default function Profile() {
                         <input
                           type="text"
                           className="form-control"
-                          value={userData?.data?.data?.cnic}
+                          value={updateUserData?.cnic}
                         />
                       </div>
                       <div className="col">
@@ -358,12 +409,15 @@ export default function Profile() {
                         <input
                           type="text"
                           className="form-control"
-                          value={userData?.data?.data?.zip}
+                          value={updateUserData?.zip}
                         />
                       </div>
                     </div>
                     <div className="my-4">
-                      <button className="btn bg-primary text-white">
+                      <button
+                        onClick={handleUserUpdate}
+                        className="btn bg-primary text-white"
+                      >
                         Update
                       </button>
                     </div>

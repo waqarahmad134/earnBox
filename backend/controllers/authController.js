@@ -9,10 +9,7 @@ const {
 const jwt = require("jsonwebtoken");
 const appError = require("../utils/appError");
 const Email = require("../utils/Email");
-const {
-  registeruserEmail,
-  forgetUserEmail,
-} = require("../helper/emailsHtml");
+const { registeruserEmail, forgetUserEmail } = require("../helper/emailsHtml");
 const bcrypt = require("bcryptjs");
 // OTP generator
 const otpGenerator = require("otp-generator");
@@ -39,9 +36,10 @@ let returnFunction = (status, message, data, error) => {
 */
 
 exports.signup = async (req, res, next) => {
-  console.log(req.body)
+  console.log(req.body);
   try {
-    const { firstName, lastName, email, phoneNum, password, referBy } = req.body;
+    const { firstName, lastName, email, phoneNum, password, referBy } =
+      req.body;
     let userExist = await user.findOne({
       where: {
         [Op.or]: [{ email: email }, { phoneNum: phoneNum }],
@@ -112,17 +110,8 @@ exports.signup = async (req, res, next) => {
         }
       }
     } else {
-      // Create new user
-      const referId = await user.create({
-        firstName,
-        lastName,
-        email,
-        phoneNum,
-        password,
-        status: true,
-        referBy,
-      }).then(user => user.id);
-  
+      let referByValue = referBy !== null && referBy !== "" ? referBy : null;
+
       let newUser = await user.create({
         firstName,
         lastName,
@@ -130,8 +119,7 @@ exports.signup = async (req, res, next) => {
         phoneNum,
         status: true,
         password,
-        referId,
-        referBy,
+        referByValue ,
       });
 
       // Generate OTP
@@ -140,7 +128,7 @@ exports.signup = async (req, res, next) => {
         upperCaseAlphabets: false,
         specialChars: false,
       });
-      
+
       // Send verification email with OTP
       const emailData = {
         name: ``,
@@ -169,6 +157,8 @@ exports.signup = async (req, res, next) => {
         userId: newUser.id,
       });
 
+      await user.update({ referId: newUser.id }, { where: { id: newUser.id } });
+
       return res.status(200).json({
         status: "1",
         message: `OTP sent successfully to ${newUser.email}`,
@@ -185,7 +175,6 @@ exports.signup = async (req, res, next) => {
   }
 };
 
-
 /*
             4. Login
     ________________________________________
@@ -201,10 +190,17 @@ exports.signIn = async (req, res, next) => {
     }
     let match = await bcrypt.compare(password, userData.password);
     if (!match) {
-      return next(new appError("Bad credentials, Please enter correct password to continue", 200));
+      return next(
+        new appError(
+          "Bad credentials, Please enter correct password to continue",
+          200
+        )
+      );
     }
     if (!userData.status) {
-      return next(new appError("Blocked by admin, Please contact admin to continue", 200));
+      return next(
+        new appError("Blocked by admin, Please contact admin to continue", 200)
+      );
     }
     const accessToken = signTocken(userData.id, "dvToken");
     let output = {
@@ -232,7 +228,7 @@ exports.signIn = async (req, res, next) => {
 //   }
 // };
 
-            // 2. Verify OTP
+// 2. Verify OTP
 exports.verifyOTP = async (req, res, next) => {
   const { OTP, userId } = req.body;
   let userExist = await user.findByPk(userId, {
@@ -506,5 +502,3 @@ exports.resendOTP = async (req, res, next) => {
     error: "",
   });
 };
-
-

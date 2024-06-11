@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Banner from "../components/Banner";
 import FeatureStart from "../components/FeatureStart";
@@ -7,8 +7,15 @@ import Feature from "../components/Feature";
 import Footer from "../components/Footer";
 import Tril from "../components/Tril";
 import Package from "../components/Package";
+import { useLocation } from "react-router-dom";
 
-export default function Home() {  return (
+export default function Home() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return (
     <>
       <Navbar />
       <Banner />

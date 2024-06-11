@@ -26,6 +26,7 @@ const upload = multer({
   storage: uploadimage,
 });
 
+router.post("/updateUserDetails", catchAsync(earningController.updateUserDetails));
 router.get("/getPaymentMethods", earningController.getPaymentMethods);
 // ! Module 1:  Auth
 // router.use(validateToken);
@@ -36,7 +37,10 @@ router.post(
   earningController.selectPackage
 );
 
-router.get("/getUserDetails/:userId", catchAsync(earningController.getUserDetails));
+router.get(
+  "/getUserDetails/:userId",
+  catchAsync(earningController.getUserDetails)
+);
 router.get("/getUserAds/:userId", catchAsync(earningController.getUserAds));
 router.post("/watchAd", catchAsync(earningController.watchAd));
 

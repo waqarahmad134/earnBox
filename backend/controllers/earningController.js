@@ -209,13 +209,13 @@ exports.dashboard = async (req, res, next) => {
 
     const totalRefers = await user.count({
       where: {
-        referid: userId,
+        referBy: userId,
       },
     });
 
     const activeRefers = await user.findAll({
       where: {
-        referid: userId,
+        referBy: userId,
         paymentstatus: true,
       },
     });
@@ -285,7 +285,7 @@ exports.withdrawRequest = async (req, res, next) => {
   } catch (error) {
     console.error("Error fetching earnings:", error);
     return res
-      .status(500)
+      .status(200)
       .json(returnFunction("0", error.message, null, error.message));
   }
 };
@@ -314,3 +314,32 @@ exports.getEarningHistory = async (req, res, next) => {
       .json(returnFunction("0", error.message, null, error.message));
   }
 };
+
+exports.updateUserDetails = async (req, res, next) => {
+  try {
+    const { userId, city, address, dateOfBirth, gender, zip, cnic } = req.body;
+    let userToUpdate = await user.findByPk(userId);
+
+    if (!userToUpdate) {
+      return res.status(404).json(returnFunction("0", "User not found", null, {}));
+    }
+
+    // Update user details
+    userToUpdate.city = city;
+    userToUpdate.address = address;
+    userToUpdate.dateOfBirth = dateOfBirth;
+    userToUpdate.gender = gender;
+    userToUpdate.zip = zip;
+    userToUpdate.cnic = cnic;
+
+    // Save the updated user
+    await userToUpdate.save();
+
+    return res.status(200).json(returnFunction("1", "User updated successfully", null, {}));
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return res.status(500).json(returnFunction("0", error.message, null, error.message));
+  }
+};
+
+

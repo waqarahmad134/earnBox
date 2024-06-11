@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  error_toaster,
-  info_toaster,
-} from "../utilities/Toaster";
+import { error_toaster, info_toaster } from "../utilities/Toaster";
 import { PostAPI } from "../utilities/PostAPI";
 
 export default function Login() {
@@ -26,7 +23,7 @@ export default function Login() {
         email: signUp.email,
         password: signUp.password,
       });
-      console.log(res?.data)
+      console.log(res?.data);
       if (res?.data?.status === "1") {
         info_toaster(res?.data?.message);
         localStorage.setItem("accessToken", res?.data?.data?.accessToken);
@@ -98,9 +95,11 @@ export default function Login() {
                             Remember me
                           </label>
                         </div>
-                        {/* <a href="#" className="forgot-link">
-                          Forgot Password?
-                        </a> */}
+                        <div className="text-primary">
+                          <Link to={"/signup"} className="forgot-link">
+                            Sign Up Now
+                          </Link>
+                        </div>
                       </div>
                     </form>
                   </div>

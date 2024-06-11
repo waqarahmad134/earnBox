@@ -92,89 +92,97 @@ export default function Signup() {
                       </Link>
                     </div>
                     {tab === !true ? (
-                      <form onSubmit={signupFunc}>
-                        <div className="form-group d-flex ">
-                          <input
-                            value={signUp.firstName}
-                            onChange={onChange}
-                            type="firstName"
-                            className="form-control"
-                            id="firstName"
-                            aria-describedby="firstName"
-                            name="firstName"
-                            placeholder="Enter First Name"
-                            required
-                          />
+                      <>
+                        <form onSubmit={signupFunc}>
+                          <div className="form-group d-flex ">
+                            <input
+                              value={signUp.firstName}
+                              onChange={onChange}
+                              type="firstName"
+                              className="form-control"
+                              id="firstName"
+                              aria-describedby="firstName"
+                              name="firstName"
+                              placeholder="Enter First Name"
+                              required
+                            />
 
-                          <input
-                            value={signUp.lastName}
-                            onChange={onChange}
-                            type="lastName"
-                            className="form-control"
-                            id="firstName"
-                            aria-describedby="lastName"
-                            name="lastName"
-                            placeholder="Enter Last Name"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <input
-                            value={signUp.email}
-                            onChange={onChange}
-                            type="email"
-                            className="form-control my-3"
-                            id="email"
-                            aria-describedby="email"
-                            name="email"
-                            placeholder="Enter Email"
-                            required
-                          />
-                        </div>
-                        <div>
-                          <input
-                            value={signUp.phoneNum}
-                            onChange={onChange}
-                            type="phoneNum"
-                            className="form-control my-3"
-                            id="phoneNum"
-                            aria-describedby="phoneNum"
-                            name="phoneNum"
-                            placeholder="Enter Phone Num"
-                            required
-                          />
-                        </div>
-                        <div className="form-group">
-                          <input
-                            value={signUp.password}
-                            onChange={onChange}
-                            type="password"
-                            className="form-control my-3"
-                            id="password"
-                            name="password"
-                            placeholder="Password"
-                            required
-                          />
-                        </div>
-                        <div className="form-group">
-                          <input
-                            value={signUp.referBy}
-                            onChange={onChange}
-                            type="referBy"
-                            className="form-control"
-                            id="referBy"
-                            name="referBy"
-                            placeholder="referBy"
-                          />
-                        </div>
+                            <input
+                              value={signUp.lastName}
+                              onChange={onChange}
+                              type="lastName"
+                              className="form-control"
+                              id="firstName"
+                              aria-describedby="lastName"
+                              name="lastName"
+                              placeholder="Enter Last Name"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <input
+                              value={signUp.email}
+                              onChange={onChange}
+                              type="email"
+                              className="form-control my-3"
+                              id="email"
+                              aria-describedby="email"
+                              name="email"
+                              placeholder="Enter Email"
+                              required
+                            />
+                          </div>
+                          <div>
+                            <input
+                              value={signUp.phoneNum}
+                              onChange={onChange}
+                              type="phoneNum"
+                              className="form-control my-3"
+                              id="phoneNum"
+                              aria-describedby="phoneNum"
+                              name="phoneNum"
+                              placeholder="Enter Phone Num"
+                              required
+                            />
+                          </div>
+                          <div className="form-group">
+                            <input
+                              value={signUp.password}
+                              onChange={onChange}
+                              type="password"
+                              className="form-control my-3"
+                              id="password"
+                              name="password"
+                              placeholder="Password"
+                              required
+                            />
+                          </div>
+                          <div className="form-group">
+                            <input
+                              value={signUp.referBy}
+                              onChange={onChange}
+                              type="referBy"
+                              className="form-control"
+                              id="referBy"
+                              name="referBy"
+                              placeholder="referBy"
+                            />
+                          </div>
 
-                        <button
-                          type="submit"
-                          className="btn btn-primary btn-block btn-submit"
-                        >
-                          Register
-                        </button>
-                      </form>
+                          <button
+                            type="submit"
+                            className="btn btn-primary btn-block btn-submit"
+                          >
+                            Register
+                          </button>
+                        </form>
+                        <div className="my-3">
+                          Already Has Account  &nbsp;
+                          <Link className="text-primary" to={"/login"}>
+                            Sign In Now
+                          </Link>
+                        </div>
+                      </>
                     ) : (
                       <>
                         <form onClick={OtpFunc}>

@@ -175,12 +175,23 @@ export default function Earn() {
             </>
           ) : (
             <>
-              <h3 className="mb-2">
-                You account is still
-                <strong style={{ color: "red" }}> pending </strong>from admin
-                side
-              </h3>
-              <p>Verification may take upto 24 hours</p>
+              {data.status !== "0" ? (
+                <>
+                  <h3 className="mb-2">
+                    You account is still
+                    <strong style={{ color: "red" }}> pending </strong>from
+                    admin side
+                  </h3>
+                  <p>Verification may take upto 24 hours</p>
+                </>
+              ) : (
+                <>
+                  <h3 className="mb-2">
+                    Please Buy the 
+                    <strong style={{ color: "red" }}> Package </strong> first 
+                  </h3>
+                </>
+              )}
             </>
           )}
         </div>
