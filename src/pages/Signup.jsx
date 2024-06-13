@@ -4,6 +4,7 @@ import {
   error_toaster,
   info_toaster,
   success_toaster,
+  warning_toaster,
 } from "../utilities/Toaster";
 import { PostAPI } from "../utilities/PostAPI";
 
@@ -49,10 +50,9 @@ export default function Signup() {
         setTab(true);
         localStorage.setItem("otpId", res?.data?.data?.otpId);
         localStorage.setItem("userId", res?.data?.data?.userId);
-        localStorage.setItem("accessToken", res?.data?.data?.accessToken);
-        navigate("/");
+        
       } else {
-        error_toaster(res?.data?.mesage);
+        warning_toaster(res?.data?.mesage);
       }
     }
   };
@@ -65,14 +65,13 @@ export default function Signup() {
         OTP: Otp,
         userId: localStorage.getItem("userId"),
       });
-      console.log(res?.data);
       if (res?.data?.status === "2") {
         success_toaster(res?.data?.message);
         localStorage.setItem("name", res?.data?.data?.firstName);
         localStorage.setItem("accessToken", res?.data?.data?.accessToken);
         navigate("/");
       } else {
-        error_toaster(res?.data?.message);
+        info_toaster(res?.data?.message);
       }
     }
   };

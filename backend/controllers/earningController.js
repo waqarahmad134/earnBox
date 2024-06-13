@@ -75,7 +75,9 @@ exports.selectPackage = async (req, res, next) => {
   if (!req.file) {
     return next(new appError("Please Upload Picture", 200));
   }
-  User.paymentProof = req.file.path;
+  tmpprofileImage = req.file.path;
+  User.profileImage = tmpprofileImage.replace(/\\/g, "/");
+
   await User.save();
   return res.json(returnFunction("1", "Package Buy Successfully!", {}, ""));
 };
@@ -177,12 +179,11 @@ exports.watchAd = async (req, res, next) => {
     } else {
       let newWallet = new wallet();
       newWallet.userId = userId;
-      newWallet.totalEarnings =
-        parseFloat(newWallet.totalEarnings) + parseFloat(amount);
-      newWallet.availableBalance =
-        parseFloat(newWallet.availableBalance) + parseFloat(amount);
+      newWallet.totalEarnings = parseFloat(amount);
+      newWallet.availableBalance = parseFloat(amount);
       await newWallet.save();
     }
+
     return res.json(
       returnFunction("1", "Trade Added Sucessfully", watchAd, "")
     );
@@ -261,7 +262,7 @@ exports.withdrawRequest = async (req, res, next) => {
       let withdrawData = new withdraw();
       withdrawData.accountNo = accountNo;
       withdrawData.amount = amount;
-      withdrawData.status = true;
+      withdrawData.status = false;
       withdrawData.userId = userId;
       withdrawData.save().then(async (dat) => {
         walletData.availableBalance =
@@ -280,7 +281,7 @@ exports.withdrawRequest = async (req, res, next) => {
       });
     } else {
       return res
-        .status(500)
+        .status(200)
         .json(returnFunction("0", "Wallet not created", null, "Error"));
     }
   } catch (error) {
@@ -290,6 +291,7 @@ exports.withdrawRequest = async (req, res, next) => {
       .json(returnFunction("0", error.message, null, error.message));
   }
 };
+
 exports.getWithdraw = async (req, res, next) => {
   const userId = req.params.userId;
   try {
@@ -297,6 +299,18 @@ exports.getWithdraw = async (req, res, next) => {
     return res.status(200).json(returnFunction("1", "", { history }, ""));
   } catch (error) {
     console.error("Error fetching earnings:", error);
+    return res
+      .status(500)
+      .json(returnFunction("0", error.message, null, error.message));
+  }
+};
+
+exports.getAllWithdrawRequest = async (req, res, next) => {
+  try {
+    let history = await withdraw.findAll();
+    return res.status(200).json(returnFunction("1", "", { history }, ""));
+  } catch (error) {
+    console.error("Error fetching withdraw:", error);
     return res
       .status(500)
       .json(returnFunction("0", error.message, null, error.message));

@@ -50,7 +50,9 @@ router.get("/getWithdraw/:userId", catchAsync(earningController.getWithdraw));
 router.get(
   "/getEarningHistory/:userId",
   catchAsync(earningController.getEarningHistory)
-);
+  );
+
+router.get("/getAllWithdrawRequest", catchAsync(earningController.getAllWithdrawRequest));
 
 // ! Module 2: Agent Dashboard
 // 1.  Get

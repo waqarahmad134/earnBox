@@ -25,18 +25,22 @@ import {
 import {
   error_toaster,
   info_toaster,
+  success_toaster,
+  warning_toaster,
 } from "../utilities/Toaster";
 import { PostAPI } from "../utilities/PostAPI";
 import { BASE_URL } from "../utilities/URL";
 import axios from "axios";
 
-export default function Profile() {
+export default function Profile({ value }) {
   const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+  
   const navigate = useNavigate();
+  const [textToCopy, setTextToCopy] = useState("");
   const [tab, setTab] = useState("profile");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [updateUserData, setupdateUserData] = useState({
@@ -66,12 +70,12 @@ export default function Profile() {
     `earning/v1/getUserDetails/${parseInt(localStorage.getItem("userId"))}`
   );
 
+  const getPackages = GetAPI(`earning/v1/getPackages`);
+  const userPackage = getPackages?.data?.data?.filter(
+    (data) => data.id === userData?.data?.data?.packageId
+  );
   const withdrawData = GetAPI(
     `earning/v1/getWithdraw/${parseInt(localStorage.getItem("userId"))}`
-  );
-  console.log(
-    "🚀 ~ Profile ~ withdrawData:",
-    withdrawData?.data?.data?.history?.[0]?.status
   );
 
   useEffect(() => {
@@ -96,6 +100,7 @@ export default function Profile() {
           zip: userData?.zip || "",
           cnic: userData?.cnic || "",
         });
+        setTextToCopy(userData?.referId);
       } catch (error) {
         error_toaster(error);
       }
@@ -167,6 +172,17 @@ export default function Profile() {
     }
   };
 
+  const handleCopy = () => {
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        success_toaster("Refer Code Copy to clipboard");
+      })
+      .catch((error) => {
+        console.error("Unable to copy to clipboard:", error);
+        alert("Failed to copy to clipboard. Please try again.");
+      });
+  };
   const logoutFunc = () => {
     const confirmed = window.confirm("Are you sure you want to logout?");
     if (confirmed) {
@@ -216,7 +232,7 @@ export default function Profile() {
                 type="text"
                 id="account"
                 onChange={onChangeAccount}
-                name="account"
+                name="accountNo"
                 className="form-control"
               />
             </ModalBody>
@@ -543,53 +559,38 @@ export default function Profile() {
               {tab === "package" && (
                 <div className="card">
                   <div className="card-body p-0 table-responsive">
-                    <h4 className="p-3 mb-0">Product Description</h4>
+                    <h4 className="p-3 mb-0">Package Description</h4>
                     <table className="table mb-0">
                       <thead>
                         <tr>
+                          <th scope="col">Image</th>
                           <th scope="col">Description</th>
-                          <th scope="col"></th>
-                          <th scope="col">Quantity</th>
-                          <th scope="col">Amount</th>
-                          <th scope="col">Status</th>
+                          <th scope="col">Ads</th>
+                          <th scope="col">Package Price</th>
+                          <th scope="col">Package Name</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <th>
-                            <img
-                              src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                              alt="product"
-                              className=""
-                              width="80"
-                            />
-                          </th>
-                          <td>
-                            Lorem ipsum dolor, sit amet consectetur adipisicing
-                            elit. Dolorem, facilis.
-                          </td>
-                          <td>₹100 X 2</td>
-                          <td>
-                            <strong>₹200</strong>
-                          </td>
-                          <td>
-                            <span className="badge badge-warning">PENDING</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <th colSpan="3">
-                            <span>Status:</span>
-                            <span className="badge badge-success">PAID</span>
-                          </th>
-                          <td>
-                            <span className="text-muted">Total Price</span>
-                            <strong>₹200</strong>
-                          </td>
-                          <td>
-                            <span className="text-muted">Total Paid</span>
-                            <strong>₹200</strong>
-                          </td>
-                        </tr>
+                        {userPackage?.map((data, index) => (
+                          <tr key={index}>
+                            <th>
+                              <img
+                                src={`${BASE_URL}${data?.image}`}
+                                alt="package-logo"
+                                className=""
+                                width="80"
+                              />
+                            </th>
+                            <td>{data?.description}</td>
+                            <td>{data?.adsNo}</td>
+                            <td>
+                              <strong>{data?.price}</strong>
+                            </td>
+                            <td>
+                              <strong>{data?.name}</strong>
+                            </td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -696,13 +697,18 @@ export default function Profile() {
               {tab === "refer" && (
                 <div className="card">
                   <div className="card-body">
-                    <h5>Refer</h5>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={userData?.data?.data?.referId}
-                      disabled
-                    />
+                    <h5>Refer Link</h5>
+                    <div className="my-4">
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={userData?.data?.data?.referId}
+                        disabled
+                      />
+                    </div>
+                    <button className="btn btn-secondary" onClick={handleCopy}>
+                      Copy
+                    </button>
                   </div>
                 </div>
               )}
