@@ -11,6 +11,7 @@ import TradingViewWidget from "../src/pages/test";
 import { PrimeReactProvider } from "primereact/api";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Card from "./pages/Card";
 
 function App() {
    return (
@@ -22,6 +23,7 @@ function App() {
             <Routes>
               <Route path="/*" element={<ErrorPage />} />
               <Route path="/test" element={<TradingViewWidget />} />
+              <Route path="/card" element={<Card />} />
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
