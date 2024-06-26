@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Footer from "../components/Footer";
 import GetAPI from "../utilities/GetAPI";
 import logo from "../img/logo.png";
@@ -29,7 +29,7 @@ import {
   warning_toaster,
 } from "../utilities/Toaster";
 import { PostAPI } from "../utilities/PostAPI";
-import { BASE_URL } from "../utilities/URL";
+import { BASE_URL, Live_URL } from "../utilities/URL";
 import axios from "axios";
 
 export default function Profile({ value }) {
@@ -172,17 +172,21 @@ export default function Profile({ value }) {
     }
   };
 
+  const inputRef = useRef(null);
   const handleCopy = () => {
+    const textToCopy = inputRef.current.value;
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
-        success_toaster("Refer Code Copy to clipboard");
+        success_toaster("Refer Code copied to clipboard");
       })
       .catch((error) => {
         console.error("Unable to copy to clipboard:", error);
         alert("Failed to copy to clipboard. Please try again.");
       });
   };
+
+
   const logoutFunc = () => {
     const confirmed = window.confirm("Are you sure you want to logout?");
     if (confirmed) {
@@ -698,17 +702,18 @@ export default function Profile({ value }) {
                 <div className="card">
                   <div className="card-body">
                     <h5>Refer Link</h5>
-                    <div className="my-4">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={userData?.data?.data?.referId}
-                        disabled
-                      />
-                    </div>
-                    <button className="btn btn-secondary" onClick={handleCopy}>
-                      Copy
-                    </button>
+                      <div className="my-4">
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={`${Live_URL}signup?refer=${userData?.data?.data?.referId}`}
+                          disabled
+                          ref={inputRef}
+                        />
+                      </div>
+                      <button className="btn btn-secondary" onClick={handleCopy}>
+                        Copy
+                      </button>
                   </div>
                 </div>
               )}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { error_toaster, info_toaster } from "../utilities/Toaster";
+import { error_toaster, info_toaster, warning_toaster } from "../utilities/Toaster";
 import { PostAPI } from "../utilities/PostAPI";
 
 export default function Login() {
@@ -23,14 +23,13 @@ export default function Login() {
         email: signUp.email,
         password: signUp.password,
       });
-      console.log(res?.data);
       if (res?.data?.status === "1") {
         info_toaster(res?.data?.message);
         localStorage.setItem("accessToken", res?.data?.data?.accessToken);
         localStorage.setItem("name", res?.data?.data?.name);
         navigate("/");
       } else {
-        error_toaster(res?.data?.message);
+        warning_toaster(res?.data?.message);
       }
     }
   };
