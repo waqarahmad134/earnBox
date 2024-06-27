@@ -8,6 +8,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(),
             allowNull: true,
           },
+          withdrawThreshold
+          : {
+            type: DataTypes.STRING(),
+            allowNull: true,
+          },
         description: {
             type: DataTypes.STRING(),
             allowNull: true,

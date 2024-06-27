@@ -7,7 +7,10 @@ export default function Navbar() {
   const logoutFunc = () => {
     const confirmed = window.confirm("Are you sure you want to logout?");
     if (confirmed) {
+      localStorage.removeItem("name");
       localStorage.removeItem("accessToken");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("otpId");
       navigate("/login");
     }
   };

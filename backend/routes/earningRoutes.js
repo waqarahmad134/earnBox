@@ -47,6 +47,7 @@ router.post("/watchAd", catchAsync(earningController.watchAd));
 router.get("/dashboard/:userId", catchAsync(earningController.dashboard));
 router.post("/withdrawRequest", catchAsync(earningController.withdrawRequest));
 router.get("/getWithdraw/:userId", catchAsync(earningController.getWithdraw));
+router.get("/updateWithdrawStatus/:userId", catchAsync(earningController.updateWithdrawStatus));
 router.get(
   "/getEarningHistory/:userId",
   catchAsync(earningController.getEarningHistory)

@@ -38,7 +38,7 @@ export default function Profile({ value }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-  
+
   const navigate = useNavigate();
   const [textToCopy, setTextToCopy] = useState("");
   const [tab, setTab] = useState("profile");
@@ -58,8 +58,9 @@ export default function Profile({ value }) {
   const [withdraw, setWithdraw] = useState({
     accountNo: "",
     amount: "",
+    accountName: "",
   });
-  const { data } = GetAPI(
+  const { data , reFetch } = GetAPI(
     `earning/v1/dashboard/${parseInt(localStorage.getItem("userId"))}`
   );
   const earningHistory = GetAPI(
@@ -158,13 +159,16 @@ export default function Profile({ value }) {
         userId: parseInt(localStorage.getItem("userId")),
         amount: withdraw?.amount,
         accountNo: withdraw?.accountNo,
+        accountName: withdraw?.accountName,
       });
       if (res?.data?.status === "1") {
         info_toaster(res?.data?.message);
         setWithdraw({
           accountNo: "",
           amount: "",
+          accountName: "",
         });
+        reFetch()
         onClose();
       } else {
         error_toaster(res?.data?.message);
@@ -185,7 +189,6 @@ export default function Profile({ value }) {
         alert("Failed to copy to clipboard. Please try again.");
       });
   };
-
 
   const logoutFunc = () => {
     const confirmed = window.confirm("Are you sure you want to logout?");
@@ -213,10 +216,11 @@ export default function Profile({ value }) {
             <ModalCloseButton />
             <ModalBody>
               <div>
-                Current Balance:{" "}
-                <b>
-                  ${" "}
-                  {parseFloat(
+              Withdraw Threshold : <b>${userPackage && userPackage.length > 0 ? userPackage[0].withdrawThreshold : 'N/A'}</b>
+              </div>
+              <div>
+                Current Balance: <b>
+                  ${parseFloat(
                     data?.data?.availableBalance?.availableBalance
                   ).toFixed(2) || "0"}
                 </b>
@@ -229,6 +233,17 @@ export default function Profile({ value }) {
                 id="money"
                 onChange={onChangeAmount}
                 name="amount"
+                className="form-control"
+                disabled={
+                  parseFloat(data?.data?.availableBalance?.availableBalance || 0).toFixed(2) < userPackage?.[0]?.withdrawThreshold
+                }
+              />
+              <label htmlFor="accountName">Account Name</label>
+              <input
+                type="text"
+                id="accountName"
+                onChange={onChangeAccount}
+                name="accountName"
                 className="form-control"
               />
               <label htmlFor="account">Account Number</label>
@@ -245,9 +260,7 @@ export default function Profile({ value }) {
               <button type="submit" className="btn btn-primary">
                 Withdraw
               </button>
-              <button onClick={onClose} className="btn btn-warning">
-                Cancel
-              </button>
+              
             </ModalFooter>
           </form>
         </ModalContent>
@@ -702,18 +715,18 @@ export default function Profile({ value }) {
                 <div className="card">
                   <div className="card-body">
                     <h5>Refer Link</h5>
-                      <div className="my-4">
-                        <input
-                          type="text"
-                          className="form-control"
-                          value={`${Live_URL}signup?refer=${userData?.data?.data?.referId}`}
-                          disabled
-                          ref={inputRef}
-                        />
-                      </div>
-                      <button className="btn btn-secondary" onClick={handleCopy}>
-                        Copy
-                      </button>
+                    <div className="my-4">
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={`${Live_URL}signup?refer=${userData?.data?.data?.referId}`}
+                        disabled
+                        ref={inputRef}
+                      />
+                    </div>
+                    <button className="btn btn-secondary" onClick={handleCopy}>
+                      Copy
+                    </button>
                   </div>
                 </div>
               )}

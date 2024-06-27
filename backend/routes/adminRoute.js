@@ -49,6 +49,13 @@ router.post('/addPaymentMethod', catchAsync(adminController.addPaymentMethod));
 router.post('/updatePaymentMethod', catchAsync(adminController.updatePaymentMethod));
 router.get('/deletePaymentMethod/:id', catchAsync(adminController.deletePaymentMethod));
 
+// ! Module 4:  Ads
+
+router.get('/getAllAds', catchAsync(adminController.getAllAds));
+router.post('/addNewAd', catchAsync(adminController.addNewAd));
+router.post('/editAd', catchAsync(adminController.editAd));
+// router.get('/deletePaymentMethod/:id', catchAsync(adminController.deletePaymentMethod));
+
 
 
 module.exports = router;

@@ -18,7 +18,6 @@ export default function Package() {
   const [model, setModel] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [selectedPackage, setSelectedPackage] = useState(null);
-  console.log("🚀 ~ Package ~ selectedPackage:", selectedPackage);
   const [paymentProof, setPaymentProof] = useState([]);
   const { data } = GetAPI("earning/v1/getPackages");
   const paymentMethods = GetAPI("earning/v1/getPaymentMethods");
@@ -94,8 +93,12 @@ export default function Package() {
                           className="img-fluid m-auto"
                           style={{ height: "200px" }}
                           src={
-                            data?.image ||
-                            "https://cdn.ttgtmedia.com/rms/misc/qr_code_barcode.jpg"
+                            (data.name && data.name.toLowerCase()) === "bitcoin"
+                              ? "/img/bitcoin.png"
+                              : (data.name && data.name.toLowerCase()) ===
+                                "easypaisa"
+                              ? "/img/easypaisa.png"
+                              : "/img/bank.jpg"
                           }
                           alt=""
                         />
@@ -147,19 +150,19 @@ export default function Package() {
               <ul>
                 <li className="pack">{data?.name}</li>
                 <li id="professional" className="price bottom-bar">
-                  {data?.price}
+                 $ {data?.price}
                 </li>
                 <li className="bottom-bar">
                   Daily Earning <b>&nbsp; ${data?.earn}</b>
                 </li>
                 <li className="bottom-bar">
-                  Package Life <b>&nbsp; {data?.validity}</b>
+                  Package Life &nbsp;<b> {data?.validity} </b>&nbsp; Months
                 </li>
                 <li className="bottom-bar">
-                  Withdraw Threshold <b>&nbsp; $50</b>
+                  Withdraw Threshold <b>&nbsp; $ {data?.withdrawThreshold}</b>
                 </li>
                 <li className="bottom-bar">
-                  Referal Bonus <b>&nbsp; {data?.referalBonus}</b>
+                  Referal Bonus <b>&nbsp;$ {data?.referalBonus}</b>
                 </li>
                 <li>
                   <button

@@ -36,7 +36,6 @@ let returnFunction = (status, message, data, error) => {
 */
 
 exports.signup = async (req, res, next) => {
-  console.log(req.body);
   try {
     const { firstName, lastName, email, phoneNum, password, referBy } =
       req.body;
@@ -49,11 +48,10 @@ exports.signup = async (req, res, next) => {
         { model: otpVerification, required: false, attributes: ["id", "OTP"] },
       ],
     });
-
     if (userExist) {
       if (email === userExist.email || phoneNum === userExist.phoneNum) {
         if (userExist.verifiedAt !== null) {
-          return res.status(400).json({ message: "User already exists" });
+          return res.status(200).json({ status: "0", message: "User already exists" });
         } else {
           // If user is not verified, resend OTP
           const OTP = otpGenerator.generate(4, {
@@ -111,7 +109,6 @@ exports.signup = async (req, res, next) => {
       }
     } else {
       let referByValue = referBy !== null && referBy !== "" ? referBy : null;
-
       let newUser = await user.create({
         firstName,
         lastName,
@@ -119,7 +116,7 @@ exports.signup = async (req, res, next) => {
         phoneNum,
         status: true,
         password,
-        referByValue ,
+        referBy : referByValue ,
       });
 
       // Generate OTP

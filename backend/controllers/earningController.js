@@ -91,7 +91,7 @@ exports.getUserAds = async (req, res, next) => {
     const userId = req.params.userId;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
+    
     let userData = await user.findOne({
       where: { id: userId },
       attributes: ["id", "paymentStatus"],
@@ -99,7 +99,7 @@ exports.getUserAds = async (req, res, next) => {
     });
 
     let total = parseInt(userData?.package?.adsNo);
-
+    
     // Get the IDs of ads that the user has already earned
     const earningAds = await earning.findAll({
       where: {
@@ -256,12 +256,13 @@ exports.dashboard = async (req, res, next) => {
 
 exports.withdrawRequest = async (req, res, next) => {
   try {
-    const { userId, amount, accountNo } = req.body;
+    const { userId, amount, accountNo , accountName } = req.body;
     let walletData = await wallet.findOne({ userId: userId });
     if (walletData) {
       let withdrawData = new withdraw();
       withdrawData.accountNo = accountNo;
       withdrawData.amount = amount;
+      withdrawData.accountName = accountName;
       withdrawData.status = false;
       withdrawData.userId = userId;
       withdrawData.save().then(async (dat) => {
@@ -305,9 +306,30 @@ exports.getWithdraw = async (req, res, next) => {
   }
 };
 
+exports.updateWithdrawStatus = async (req, res, next) => {
+  const withdrawId = req.params.userId;
+  try {
+    const withdrawData = await withdraw.findByPk(withdrawId);
+    if (!withdrawData) {
+      return res.json(returnFunction("0", "Not found", {}, ""));
+    }
+    await withdraw.update({ status: true }, { where: { id: withdrawId } });
+    return res.status(200).json(returnFunction("1", "Withdraw Sucessfull", "Withdraw Sucessfull", ""));
+  } catch (error) {
+    console.error("Error fetching earnings:", error);
+    return res
+      .status(500)
+      .json(returnFunction("0", error.message, null, error.message));
+  }
+};
+
 exports.getAllWithdrawRequest = async (req, res, next) => {
   try {
-    let history = await withdraw.findAll();
+    let history = await withdraw.findAll({
+      include: [{
+        model: user,
+      }],
+    });
     return res.status(200).json(returnFunction("1", "", { history }, ""));
   } catch (error) {
     console.error("Error fetching withdraw:", error);

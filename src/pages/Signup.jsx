@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  error_toaster,
   info_toaster,
   success_toaster,
-  warning_toaster,
 } from "../utilities/Toaster";
 import { PostAPI } from "../utilities/PostAPI";
+import Swal from "sweetalert2";
+
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -50,9 +50,13 @@ export default function Signup() {
         setTab(true);
         localStorage.setItem("otpId", res?.data?.data?.otpId);
         localStorage.setItem("userId", res?.data?.data?.userId);
-        
       } else {
-        warning_toaster(res?.data?.mesage);
+        Swal.fire({
+          title: "Error",
+          text: `${res?.data?.message}`,
+          icon: "warning",
+        });
+        success_toaster(res?.data?.mesage);
       }
     }
   };
@@ -175,7 +179,7 @@ export default function Signup() {
                           </button>
                         </form>
                         <div className="my-3">
-                          Already Has Account  &nbsp;
+                          Already Has Account &nbsp;
                           <Link className="text-primary" to={"/login"}>
                             Sign In Now
                           </Link>

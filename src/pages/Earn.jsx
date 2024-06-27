@@ -1,26 +1,38 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Footer from "../components/Footer";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../img/logo.png";
 import GetAPI from "../utilities/GetAPI";
 import { PostAPI } from "../utilities/PostAPI";
 import { info_toaster } from "../utilities/Toaster";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  useDisclosure,
+} from "@chakra-ui/react";
 
 export default function Earn() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [countdown, setCountdown] = useState(10);
+  console.log(countdown);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  const logoutFunc = () => {
+  const logoutFunc = useCallback(() => {
     const confirmed = window.confirm("Are you sure you want to logout?");
     if (confirmed) {
       localStorage.removeItem("accessToken");
       navigate("/login");
     }
-  };
+  }, [navigate]);
+
   const headerStyles = {
     position: "fixed",
     top: "0",
@@ -31,20 +43,37 @@ export default function Earn() {
   };
 
   const { data, reFetch } = GetAPI(
-    `earning/v1/getUserAds/${parseInt(localStorage.getItem("userId"))}`
+    `earning/v1/getUserAds/${parseInt(localStorage.getItem("userId") || "0")}`
   );
-  const watchAdFunc = async (id) => {
-    let res = await PostAPI("earning/v1/watchAd", {
-      userId: localStorage.getItem("userId"),
-      adId: id,
-    });
-    if (res?.data?.status === "1") {
-      info_toaster(res?.data?.message);
-      reFetch();
-    } else {
-      info_toaster(res?.data?.message);
+
+  const watchAdFunc = useCallback(
+    async (id) => {
+      try {
+        const res = await PostAPI("earning/v1/watchAd", {
+          userId: localStorage.getItem("userId"),
+          adId: id,
+        });
+        info_toaster(res?.data?.message);
+        if (res?.data?.status === "1") {
+          reFetch();
+        }
+      } catch (error) {
+        console.error("Error watching ad:", error);
+        info_toaster("An error occurred while watching the ad");
+      }
+    },
+    [reFetch]
+  );
+
+  useEffect(() => {
+    let timer;
+    if (isOpen && countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
     }
-  };
+    return () => clearInterval(timer);
+  }, [isOpen, countdown]);
 
   return (
     <>
@@ -135,39 +164,64 @@ export default function Earn() {
 
               <div className="portos">
                 {data?.data?.addData?.length > 0 ? (
-                  data?.data?.addData?.map((data, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-justify-between flex-align-center bg-white porto"
-                      style={{ cursor: "pointer" }}
-                    >
-                      <img
-                        className="rounded m-auto"
-                        src={data?.image}
-                        alt={data?.title}
-                      />
-                      <div className="mt-3">
-                        <div className="flex flex-align-center flex-justify-between mb-2">
-                          <p className="text-xl mr-4">
-                            <b>{data?.title}</b>
-                            {/* <span className="text-gray-500 text-sm"> / USDT</span> */}
-                          </p>
-                          <p className="text-xl">Earning : $ {data?.usage}</p>
+                  data.data.addData.map((item, index) => (
+                    <>
+                      <div
+                        key={index}
+                        className="flex flex-justify-between flex-align-center bg-white porto"
+                        style={{ cursor: "pointer" }}
+                      >
+                        <div className="mt-3">
+                          <div className="flex flex-align-center flex-justify-between mb-2">
+                            <p className="text-xl mr-4">
+                              <b>{item.title}</b>
+                            </p>
+                          </div>
+                        </div>
+                        <div className="m-auto">
+                          <button onClick={onOpen} className="btn btn-primary">
+                            Trade
+                          </button>
                         </div>
                       </div>
-                      <div className="m-auto">
-                        <button
-                          onClick={() => watchAdFunc(data?.id)}
-                          className="btn btn-primary"
-                        >
-                          Trade {data?.code} {data?.id}
-                        </button>
-                      </div>
-                    </div>
+                      <Modal isOpen={isOpen} onClose={onClose}>
+                        <ModalOverlay />
+                        <ModalContent>
+                          <ModalHeader>
+                            Calculating Trade and Analysis
+                          </ModalHeader>
+                          <ModalBody>
+                            <div>
+                              <img
+                                className="mx-auto mb-5"
+                                src="https://kinsta.com/wp-content/uploads/2020/06/medium-rectangle-1.png"
+                                alt="Ad"
+                              />
+                            </div>
+                            {countdown > 0 ? (
+                              <h3>Please Wait for {countdown} seconds...</h3>
+                            ) : (
+                              <div className="mx-auto text-center">
+                                <button
+                                  onClick={() => {
+                                    watchAdFunc(item?.id);
+                                    onClose();
+                                    setCountdown(10)
+                                  }}
+                                  className="btn btn-primary"
+                                >
+                                  Trade Now
+                                </button>
+                              </div>
+                            )}
+                          </ModalBody>
+                        </ModalContent>
+                      </Modal>
+                    </>
                   ))
                 ) : (
                   <h2 className="mb-2" style={{ whiteSpace: "nowrap" }}>
-                    You have sucessfully{" "}
+                    You have successfully{" "}
                     <strong style={{ color: "red" }}>traded</strong> today
                   </h2>
                 )}
@@ -178,19 +232,17 @@ export default function Earn() {
               {data.status !== "0" ? (
                 <>
                   <h3 className="mb-2">
-                    You account is still
+                    Your account is still
                     <strong style={{ color: "red" }}> pending </strong>from
                     admin side
                   </h3>
-                  <p>Verification may take upto 24 hours</p>
+                  <p>Verification may take up to 24 hours</p>
                 </>
               ) : (
-                <>
-                  <h3 className="mb-2">
-                    Please Buy the 
-                    <strong style={{ color: "red" }}> Package </strong> first 
-                  </h3>
-                </>
+                <h3 className="mb-2">
+                  Please Buy the
+                  <strong style={{ color: "red" }}> Package </strong> first
+                </h3>
               )}
             </>
           )}

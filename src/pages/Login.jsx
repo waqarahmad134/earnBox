@@ -23,9 +23,11 @@ export default function Login() {
         email: signUp.email,
         password: signUp.password,
       });
+      console.log(res?.data)
       if (res?.data?.status === "1") {
         info_toaster(res?.data?.message);
         localStorage.setItem("accessToken", res?.data?.data?.accessToken);
+        localStorage.setItem("userId", res?.data?.data?.id);
         localStorage.setItem("name", res?.data?.data?.name);
         navigate("/");
       } else {
